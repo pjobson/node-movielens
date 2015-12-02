@@ -1,0 +1,117 @@
+NOTES FROM THE API
+
+https://movielens.org/explore?
+
+https://movielens.org/api/movies/genres
+https://movielens.org/api/users/me
+https://movielens.org/api/users/me/tags
+
+https://movielens.org/api/movies/explore?
+	q								Title Search
+	directors						Director Search
+	actors							Actor Search
+	maxDaysAgo						Maximum Days Ago
+	maxFutureDays					Maximum Days in Future
+	hasRated (yes/NO/ignore)		Include movies you've rated
+	page							page result number
+	sortBy							Sort By
+		userRatedDate				Date Rated
+		userRating					Your Rating
+		userRatingDiff				Your Rating vs. Average
+		prediction					Recommended
+		popularity					# Ratings
+		releaseDate					Release Date
+		dateAdded					Date Added
+		tagScore
+	sortDirection (asc/DESC)		Sort Direction
+	genre							Movie Genre
+		action
+		adventure
+		animation
+		comedy
+		crime
+		documentary
+		drama
+		family
+		fantasy
+		foreign
+		history
+		horror
+		music
+		mystery
+		romance
+		science%20fiction
+		thriller
+		tv%20movie
+		war
+		western
+	tag								Movie Tags
+	languages						Language of Movie
+		english						English
+		français					French
+		deutsch						German
+		pусский						Russian
+		nederlands					Dutch
+		español						Spanish
+		dansk						Danish
+		svenska						Swedish
+		magyar						Hungarian
+		italiano					Italian
+		shqip						Albanian
+		latin						Latin
+		普通话						Mandarin
+		wolof						Wolof
+		kiswahili					Swahili
+		日本語						Japanese
+		bamanankan					Bambara
+		ქართული					Georgian
+		العربية						Arabic
+		türkçe						Turkish
+		український					Ukrainian
+		اردو							Urdu
+		עִבְרִית						Hebrew
+		ελληνικά						Greek
+		polski						Polish
+		हिन्दी						Hindi
+		پښتو							Pashto
+		íslenska					Icelandic
+		eesti						Estonian
+		tiếng%20việt					Vietnamese
+		hrvatski					Croatian
+		suomi						Finnish
+		afrikaans					Afrikaans
+		বাংলা						Bengali
+		босански						Bosnian
+		български език				Bulgarian
+		català						Catalan
+		český						Czech
+		galego						Galician
+		bahasa indonesia			Indonesian
+		gaeilge						Irish
+		norsk						Norwegian
+		português					Portuguese
+		ਪੰਜਾਬੀ						Punjabi
+		română						Romanian
+		slovenčina					Slovak
+		தமிழ்						Tamil
+		తెలుగు					Telugu
+		ภาษาไทย						Thai
+		cymraeg						Welsh
+	mpaa							Comma deliminated list
+		g							General Audiences
+		pg							Parental Guidance Suggested
+		pg-13						Parents Strongly Cautioned
+		r							Restricted
+		nc-17						Adults Only
+	minPop							Minimum Ratings
+	maxPop							Maximum Ratings
+	minYear							Minimum Year
+	maxYear							Maximum Year
+	hasHidden (yes/NO/ignore)		Show Movies You Have Hidden
+	hasWishlisted (yes/NO/ignore)	User Has Added to Wishlist
+
+
+
+hasRated=yes&page=2&sortBy=userRatedDate
+https://movielens.org/api/movies/explore?hasRated=yes&sortBy=userRatedDate
+?hasRated=yes&sortBy=userRatedDate
