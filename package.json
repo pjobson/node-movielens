@@ -1,0 +1,19 @@
+{
+  "name": "node-movielens",
+  "version": "1.0.0",
+  "description": "Interface for unpublished movielens API.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pjobson/node-movielens.git"
+  },
+  "author": "Paul Jobson <pjobson@gmail.com> (http://jobson.us)",
+  "license": "GNU GENERAL PUBLIC LICENSE",
+  "bugs": {
+    "url": "https://github.com/pjobson/node-movielens/issues"
+  },
+  "homepage": "https://github.com/pjobson/node-movielens#readme"
+}
