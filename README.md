@@ -59,7 +59,8 @@ Using the cookie from getAuthCookie you can set the cookie instead of logging in
 
 Returns success or expired depending on the status of your cookie.  It just compares the expire date of your cookie to the current time.
 
-    ml.setAuthCookie(function(message) {
+    var cookie = 'cookie_data_here';
+    ml.setAuthCookie(cookie,function(message) {
         console.log(message);
     });
 
