@@ -1,10 +1,10 @@
-var https       = require('https'),
-	querystring = require('querystring');
+var https        = require('https'),
+	querystring  = require('querystring');
 
-var nodemovielens = {
-	init: function(args) {
-		args = args || {};
-		// this.apiURL = 'https://movielens.org/api/';
+
+var NodeMovieLens = {
+	init: function() {
+		// https://movielens.org/api/
 		this.api = {
 			hostname: 'movielens.org',
 			port:     '443',
@@ -21,73 +21,176 @@ var nodemovielens = {
 				'User-Agent':       'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:42.0) Gecko/20100101 Firefox/42.0'
 			}
 		};
-		this.auth = {
-			'userName': args.userName || '',
-			'password': args.password || ''
+
+		return this;
+	},
+	// Set Auth Cookie Method
+	// More effective than constantly logging in
+	setAuthCookie: function(cookie,callback) {
+		var expiresEpoch = new Date(cookie.match(/Expires=(.+?);/)[1]).getTime();
+		var nowEpoch     = new Date().getTime();
+		// Return expired if cookie is no longer valid
+		if (expiresEpoch <= nowEpoch) {
+			callback('expired');
+		} else {
+			this.authCookie = cookie;
+			callback('success')
 		}
-		this.login();
-		console.log('--------------------------------\n',this,'\n--------------------------------');
 	},
-	setUsername: function(username) {
-
+	// Get Auth Cookie Method
+	// Returns the Auth Cookie
+	getAuthCookie: function(callback) {
+		return callback(this.authCookie);
 	},
-	setPassword: function(password) {
-
-	},
-	login: function() {
+	// Login Method
+	login: function(auth,callback) {
 		// https://movielens.org/api/sessions
 		// {"userName":"root@example.com","password":"abc123"}
-		var postData = JSON.stringify(this.auth);
+		var self = this;
+		self.auth = auth || {};
+		self.auth = {
+			'userName': auth.username || '',
+			'password': auth.password || '',
+		}
+		var postData = JSON.stringify(self.auth);
 
 		var options  = {
-			hostname: this.api.hostname,
-			port: this.api.port,
+			hostname: self.api.hostname,
+			port: self.api.port,
 			path: '/api/sessions',
 			method: 'POST',
-			headers: this.api.headers
+			headers: self.api.headers
 		};
 		// Additional Headers
 		options.headers['Referer']        = 'https://movielens.org/login';
-		options.headers['Content-Length'] = postData.length;
+		options.headers['Content-Length'] = Buffer.byteLength(postData,'utf8');
 
-		var that = this;
-			that.loginData = '';
+		var loginData = '';
 		var req = https.request(options, function(res) {
 			// console.log('STATUS: ' + res.statusCode);
 			// console.log('HEADERS: ' + JSON.stringify(res.headers));
 			res.setEncoding('utf8');
 			res.on('data', function (chunk) {
-				that.loginData += chunk;
+				loginData += chunk;
 			});
 			res.on('end', function() {
 				// Login Failure
 				// { status: 'fail', message: 'authentication failed' }
 				// Login Success
 				// { status: 'success' }
-				console.log(JSON.parse(that.loginData));
-				console.log(res.headers);
-			})
+				loginData = JSON.parse(loginData);
+				if (loginData.status==='fail') {
+					self.loginStatusUpdater(callback,loginData);
+				} else {
+					self.loginStatusUpdater(callback,loginData,res.headers);
+				}
+			});
 		});
-		req.on('error', function(e) {
-			console.log('problem with request: ' + e.message);
+		req.on('error', function(err) {
+			// This only happens if a timeout occured or something weird happened
+			/*
+				{ [Error: getaddrinfo ENOTFOUND movielensx.org]
+				  code: 'ENOTFOUND',
+				  errno: 'ENOTFOUND',
+				  syscall: 'getaddrinfo',
+				  hostname: 'movielensx.org',
+				  status: 'fail' }
+			*/
+			err.status = 'fail';
+			self.loginStatusUpdater(callback,err);
 		});
 		req.write(postData);
 		req.end();
+	},
+	// Updates login status stuff
+	loginStatusUpdater: function(callback,msg,headers) {
+		var self = this;
+		if (msg.status === 'success') {
+			self.authCookie = headers['set-cookie'][0];
+		}
+		callback(msg);
+	},
+	// Generic GETter function
+	// I should probably put the login stuff here, but I don't really feel like it.
+	getter: function(callback,path,data) {
+		var self = this;
+
+		var options  = {
+			hostname: self.api.hostname,
+			port: self.api.port,
+			path: path,
+			method: 'GET',
+			headers: self.api.headers
+		};
+		// Additional Headers
+		options.headers['Cookie'] = this.authCookie;
+
+		var resData = '';
+		var req = https.request(options, function(res) {
+			res.setEncoding('utf8');
+			res.on('data', function (chunk) {
+				resData += chunk;
+			});
+			res.on('end', function() {
+				callback(resData);
+			});
+		});
+		req.end();
 
 	},
-	setCookie: function(headerData) {
-		console.log()
-	},
-	getGenres: function() {
+	// THE FUN STUFF!
+	// Get Genres
+	// Returns a list of genres
+	getGenres: function(callback) {
 		// https://movielens.org/api/movies/genres
+		this.getter(callback,'/api/movies/genres');
 	},
-	getMe: function() {
+	// Get My User Info
+	// Gets your user info
+	getMe: function(callback) {
 		// https://movielens.org/api/users/me
+		this.getter(callback,'/api/users/me');
 	},
-	getMeTags: function() {
+	// Get My Tags
+	// Gets tags you've set
+	getMyTags: function(callback) {
 		// https://movielens.org/api/users/me/tags
+		this.getter(callback,'/api/users/me/tags');
+	},
+	// explore
+	// Query engine.
+	explore: function(params,callback) {
+		// https://movielens.org/api/movies/explore?
+	},
+	// Top Picks
+	topPicks: function(callback) {
+		// https://movielens.org/api/movies/explore?hasRated=no&sortBy=prediction
+	},
+	// Recent Releases
+	recentReleases: function(callback) {
+		// https://movielens.org/api/movies/explore?hasRated=no&maxDaysAgo=90&maxFutureDays=0&sortBy=releaseDate
+	},
+	// Favorites within the last year
+	favoritesYear: function(callback) {
+		// https://movielens.org/api/movies/explore?hasRated=no&maxDaysAgo=365&maxFutureDays=0&minPop=100&sortBy=avgRating
+	},
+	// New Additions
+	newAdditions: function(callback) {
+		// https://movielens.org/api/movies/explore?sortBy=dateAdded
+	},
+	// Movies you've rated
+	yourRatings: function(callback) {
+		// https://movielens.org/api/movies/explore?hasRated=yes&sortBy=userRatedDate
+	},
+	// Your wishlist
+	yourWishlist: function(callback) {
+		// https://movielens.org/api/movies/explore?hasWishlisted=yes&sortBy=userListedDate
+	},
+	// Your hidden list
+	yourHidden: function(callback) {
+		// https://movielens.org/api/movies/explore?hasHidden=yes
 	}
 };
 
+module.exports = NodeMovieLens.init();
 
-module.exports = nodemovielens;

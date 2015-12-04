@@ -110,8 +110,3 @@ https://movielens.org/api/movies/explore?
 	hasHidden (yes/NO/ignore)		Show Movies You Have Hidden
 	hasWishlisted (yes/NO/ignore)	User Has Added to Wishlist
 
-
-
-hasRated=yes&page=2&sortBy=userRatedDate
-https://movielens.org/api/movies/explore?hasRated=yes&sortBy=userRatedDate
-?hasRated=yes&sortBy=userRatedDate
