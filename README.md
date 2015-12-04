@@ -146,8 +146,6 @@ Examples
     // "title": "Twilight Zone: The Movie",
     // "numRatings": 454,
     // "avgRating": 3.25441
-
-
     ml.explore({
         directors: 'george miller',
         minYear: 1980,
