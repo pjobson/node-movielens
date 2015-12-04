@@ -101,7 +101,9 @@ Expects: integer
 
 Default: 1
 
-    page=1
+    {
+        page: 1
+    }
 
 Example pager object.
 
@@ -111,25 +113,31 @@ Example pager object.
 
 Movie title query.
 
-Expects: lower case escaped string
+Expects: lower case string
 
-    q=mad%20max
+    {
+        q: 'mad max'
+    }
 
 #### directors
 
 Director Name query.
 
-Expects: lower case escaped string
+Expects: lower case string
 
-    directors=george%20miller
+    {
+        directors: 'george miller'
+    }
 
 #### actors
 
 Actor Name query.
 
-Expects: lower case escaped string
+Expects: lower case string
 
-    actors=tom%20hardy
+    {
+        actors: 'tom hardy'
+    }
 
 #### maxDaysAgo & maxFutureDays
 
@@ -137,12 +145,19 @@ Maximum days ago movie was released.  Maximum days in the future for unreleased 
 
 Expects: integer
 
-    maxDaysAgo=90
-    maxFutureDays=90
+    {
+        maxDaysAgo: 90
+    }
+    {
+        maxFutureDays: 90
+    }
 
 Can be combined to find new movies, for example find movies released with in the last 5 days.
 
-    maxDaysAgo=5&maxFutureDays=0
+    {
+        maxDaysAgo:5,
+        maxFutureDays: 0
+    }
 
 #### hasRated
 
@@ -154,15 +169,21 @@ Default: no
 
 Include only movies you've rated.
 
-    hasRated=yes
+    {
+        hasRated: 'yes'
+    }
 
 Include only movies you have not rated.
 
-    hasRated=no
+    {
+        hasRated: 'no'
+    }
 
 Include both movies you've rated and not.
 
-    hasRated=ignore
+    {
+        hasRated: 'ignore'
+    }
 
 #### sortBy
 
@@ -172,8 +193,12 @@ Expects: userRatedDate, userRating, userRatingDiff, prediction, popularity, rele
 
 Default: (I'm not sure)
 
-    sortBy=userRatedDate
-    sortBy=userRating
+    {
+        sortBy: 'userRatedDate'
+    }
+    {
+        sortBy: 'userRating'
+    }
 
 ##### userRatedDate
 
@@ -192,9 +217,7 @@ For eample I rated Where The Buffalo Roam at 5.0 where as the average rating was
     {
         "movieId": 3235,
         "movie": {
-            "movieId": 3235,
-            "tmdbMovieId": 13005,
-            "imdbMovieId": "0081748",
+            ....stuff removed....
             "title": "Where the Buffalo Roam",
             ....stuff removed....
             "numRatings": 475,
@@ -237,35 +260,47 @@ Expects: asc, desc
 
 Default: desc
 
-    sortDirection=asc
-    sortDirection=desc
+    {
+        sortDirection: 'asc'
+    }
+    {
+        sortDirection: 'desc'
+    }
 
 #### genre
 
 Genre of the movies you want to find.
 
-Expects: lower case escaped string
+Expects: lower case string
 
 Use the getGenres() method to get the current list.
 
-    genre=mystery
-    genre=science%20fiction
+    {
+        genre: 'mystery'
+    }
+    {
+        genre: 'science fiction'
+    }
 
 #### tag
 
 Movies tags.
 
-Expects: single or comma delineated, lower case, escaped list of tags
+Expects: a string or an array of strings, lower case list of tags
 
 A single tag will return all movies with that tag, where as a comma delineated list will return movies with any of the tags listed.
 
 All movies tagged zombie.
 
-    tag=zombie
+    {
+        tag: 'zombie'
+    }
 
 Both movies tagged zombie OR funny.  This is kind of odd, I'd expect it to return funny zombie movies, but it does not.
 
-    tag=zombie,funny
+    {
+        tag: ['zombie','funny']
+    }
 
 #### languages
 
@@ -275,8 +310,12 @@ Expects: lower case string
 
 Default: (empty any language)
 
-    languages=english
-    languages=ქართული
+    {
+        languages: 'english'
+    }
+    {
+        languages: 'ქართული'
+    }
 
 List of languages I've found, there may be more.
 
@@ -335,12 +374,16 @@ List of languages I've found, there may be more.
 
 MPAA rating.
 
-Expects: single or comma delineated list of ratings
+Expects: a string or array of strings  of ratings
 
 Default: (none show all movies of any rating)
 
-    mpaa=g
-    mpaa=g,pg
+    {
+        mpaa: 'g'
+    }
+    {
+        mpaa: ['g','pg']
+    }
 
 Valid options.
 
@@ -358,9 +401,16 @@ Expects: integer
 
 Default: (none)
 
-    minPop=0
-    maxPop=5000
-    minPop=0&maxPop=5000
+    {
+        minPop:0
+    }
+    {
+        maxPop:5000
+    }
+    {
+        minPop:0,
+        maxPop:5000
+    }
 
 Each movie has a Number of Ratings attribute.  These are used to narrow the number of ratings down or search for not often rated movies.
 
@@ -374,9 +424,16 @@ Expects: integer
 
 Default: (none)
 
-    minYear=0
-    maxYear=5000
-    minYear=1980&maxYear=1989
+    {
+        minYear:0
+    }
+    {
+        maxYear:2015
+    }
+    {
+        minYear:1980,
+        maxYear:1989
+    }
 
 #### hasHidden
 
@@ -388,15 +445,20 @@ Default: no
 
 Show only movies you've hidden.
 
-    hasHidden=yes
+    {
+        hasHidden:'yes'
+    }
 
 Show only movies you have not hidden.
 
-    hasHidden=no
-
+    {
+        hasHidden:'no'
+    }
 Show all movies hidden or not.
 
-    hasHidden=ignore
+    {
+        hasHidden:'ignore'
+    }
 
 #### hasWishlisted
 
@@ -408,15 +470,21 @@ Default: no
 
 Show only movies on your wishlist.
 
-    hasWishlisted=yes
+    {
+        hasWishlisted:'yes'
+    }
 
 Show only movies not on your wishlist.
 
-    hasWishlisted=no
+    {
+        hasWishlisted:'no'
+    }
 
 Show all movies wishlested or not.
 
-    hasWishlisted=ignore
+    {
+        hasWishlisted:'ignore'
+    }
 
 ### Various explore() Shortcut Methods
 
