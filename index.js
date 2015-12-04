@@ -112,13 +112,14 @@ var NodeMovieLens = {
 	},
 	// Generic GETter function
 	// I should probably put the login stuff here, but I don't really feel like it.
-	getter: function(callback,path,data) {
+	getter: function(callback,path,queryStr) {
 		var self = this;
+		queryStr = queryStr || '';
 
 		var options  = {
 			hostname: self.api.hostname,
 			port: self.api.port,
-			path: path,
+			path: path+'?'+queryStr,
 			method: 'GET',
 			headers: self.api.headers
 		};
@@ -159,36 +160,75 @@ var NodeMovieLens = {
 	},
 	// explore
 	// Query engine.
-	explore: function(params,callback) {
-		// https://movielens.org/api/movies/explore?
+	explore: function(paramsObj,callback) {
+		// https://movielens.org/api/movies/explore
+		this.getter(callback,'/api/movies/explore',querystring.stringify(paramsObj));
 	},
 	// Top Picks
 	topPicks: function(callback) {
 		// https://movielens.org/api/movies/explore?hasRated=no&sortBy=prediction
+		var paramsObj = {
+			hasRated: 'no',
+			sortBy: 'prediction'
+		};
+		this.getter(callback,'/api/movies/explore',querystring.stringify(paramsObj));
 	},
 	// Recent Releases
 	recentReleases: function(callback) {
 		// https://movielens.org/api/movies/explore?hasRated=no&maxDaysAgo=90&maxFutureDays=0&sortBy=releaseDate
+		var paramsObj = {
+			hasRated: 'no',
+			maxDaysAgo: 90,
+			maxFutureDays: 0,
+			sortBy: 'releaseDate'
+		};
+		this.getter(callback,'/api/movies/explore',querystring.stringify(paramsObj));
 	},
 	// Favorites within the last year
 	favoritesYear: function(callback) {
 		// https://movielens.org/api/movies/explore?hasRated=no&maxDaysAgo=365&maxFutureDays=0&minPop=100&sortBy=avgRating
+		var paramsObj = {
+			hasRated: 'no',
+			maxDaysAgo: 365,
+			maxFutureDays: 0,
+			minPop: 100,
+			sortBy: 'avgRating'
+		};
+		this.getter(callback,'/api/movies/explore',querystring.stringify(paramsObj));
 	},
 	// New Additions
 	newAdditions: function(callback) {
 		// https://movielens.org/api/movies/explore?sortBy=dateAdded
+		var paramsObj = {
+			sortBy: 'dateAdded'
+		};
+		this.getter(callback,'/api/movies/explore',querystring.stringify(paramsObj));
 	},
 	// Movies you've rated
 	yourRatings: function(callback) {
 		// https://movielens.org/api/movies/explore?hasRated=yes&sortBy=userRatedDate
+		var paramsObj = {
+			hasRated: 'yes',
+			sortBy: 'userRatedDate'
+		};
+		this.getter(callback,'/api/movies/explore',querystring.stringify(paramsObj));
 	},
 	// Your wishlist
 	yourWishlist: function(callback) {
 		// https://movielens.org/api/movies/explore?hasWishlisted=yes&sortBy=userListedDate
+		var paramsObj = {
+			hasWishlisted: 'yes',
+			sortBy: 'userListedDate'
+		};
+		this.getter(callback,'/api/movies/explore',querystring.stringify(paramsObj));
 	},
 	// Your hidden list
 	yourHidden: function(callback) {
 		// https://movielens.org/api/movies/explore?hasHidden=yes
+		var paramsObj = {
+			hasHidden: 'yes'
+		};
+		this.getter(callback,'/api/movies/explore',querystring.stringify(paramsObj));
 	}
 };
 

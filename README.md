@@ -91,6 +91,72 @@ Gets the tags you have made.
 
 The best for last, explore is the query engine to search for movies.
 
+Examples
+
+    // Get 'mad max' movies
+    // 4 results found
+    ml.explore({
+        q: 'mad max'
+    }, function(res) {
+        console.log(res);
+    });
+
+    // Get 'mad max' movies directed by 'georege miller'
+    // 4 results found
+    ml.explore({
+        q: 'mad max',
+        directors: 'george miller'
+    }, function(res) {
+        console.log(res);
+    });
+
+    // Get 'mad max' movies directed by 'george miller' acted by 'tom hardy'
+    // 1 result found
+    ml.explore({
+        q: 'mad max',
+        directors: 'george miller',
+        actors: 'tom hardy'
+    }, function(res) {
+        console.log(res);
+    });
+
+    // Get movies acted by 'tom hardy' which I've rated
+    // 6 results found
+    ml.explore({
+        actors: 'tom hardy',
+        hasRated: 'yes'
+    }, function(res) {
+        console.log(res);
+    });
+
+    // Get movies directed by 'george miller' in the 80's ordered by popularity (number of ratings)
+    // 4 results found
+    // "title": "Mad Max 2: The Road Warrior",
+    // "numRatings": 9783,
+    // "avgRating": 3.62818
+    //
+    // "title": "Mad Max Beyond Thunderdome",
+    // "numRatings": 6046,
+    // "avgRating": 3.11346
+    //
+    // "title": "The Witches of Eastwick",
+    // "numRatings": 1997,
+    // "avgRating": 3.1993
+    //
+    // "title": "Twilight Zone: The Movie",
+    // "numRatings": 454,
+    // "avgRating": 3.25441
+
+
+    ml.explore({
+        directors: 'george miller',
+        minYear: 1980,
+        maxYear: 1989,
+        sortBy: 'popularity'
+    }, function(res) {
+        console.log(res);
+    });
+
 Here is a description of the API from what I've been able to find, there may be more options which I do not know of.
 
 #### page
@@ -492,31 +558,59 @@ Show all movies wishlested or not.
 
 Your top picks.
 
-    ?hasRated=no&sortBy=prediction
+    {
+        hasRated: 'no',
+        sortBy: 'prediction'
+    }
 
 #### recentReleases()
 
 Recently released movies.
 
-    ?hasRated=no&maxDaysAgo=90&maxFutureDays=0&sortBy=releaseDate
+    {
+        hasRated: 'no',
+        maxDaysAgo: 90,
+        maxFutureDays: 0,
+        sortBy: 'releaseDate'
+    }
 
 #### favoritesYear()
 
 Favorites within the last year.
 
-    ?hasRated=no&maxDaysAgo=365&maxFutureDays=0&minPop=100&sortBy=avgRating
+    {
+        hasRated: 'no',
+        maxDaysAgo: 365,
+        maxFutureDays: 0,
+        minPop: 100,
+        sortBy: 'avgRating'
+    }
 
 #### newAdditions()
 
 The movies most recently added to MovieLens.
 
-    ?sortBy=dateAdded
+    {
+        sortBy: 'dateAdded'
+    }
 
 #### yourRatings()
 
 Movies which you've rated.
 
-    ?hasRated=yes&sortBy=userRatedDate
+    {
+        hasRated: 'yes',
+        sortBy: 'userRatedDate'
+    }
+
+#### yourWishlist()
+
+Movies in your wishlist.
+
+    {
+        hasWishlisted: 'yes',
+        sortBy: 'userListedDate'
+    }
 
 #### yourHidden()
 
