@@ -615,5 +615,7 @@ Movies in your wishlist.
 
 Movies you've hidden.
 
-    ?hasHidden=yes
+    {
+        hasHidden: 'yes'
+    }
 
