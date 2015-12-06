@@ -1,6 +1,8 @@
 # node-movielens
 Node API for the movielens unpublished API
 
+This currently supports read methods, there are some write methods, but I'm too lazy to implement them right now.
+
 This came about, because I wanted to export the list of movies I've rated to share with friends and there was no published way to do it.
 
 ## Usage
