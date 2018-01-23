@@ -1,4 +1,7 @@
 # node-movielens
+
+*This is currently in a very broken state, I have not had the time or interest in updating it.*
+
 Node API for the movielens unpublished API
 
 This currently supports read methods, there are some write methods, but I'm too lazy to implement them right now.
