@@ -139,7 +139,46 @@ var NodeMovieLens = {
 		req.end();
 
 	},
-	// THE FUN STUFF!
+	// Generic POSTter function
+	poster: function(callback,path,postBody) {
+		var self = this;
+		postBody = postBody || '';
+		var pBody = JSON.stringify(postBody);
+		var options  = {
+			hostname: self.api.hostname,
+			port: self.api.port,
+			path: path,
+			method: 'POST',
+			headers: self.api.headers
+		};
+		// Additional Headers
+		options.headers['Cookie'] = this.authCookie;
+		options.headers['Content-Length'] = pBody.length;
+		options.headers['Referer'] = 'https://movielens.org/movies/'+ postBody.movieId
+
+		var resData = '';
+		var req = https.request(options, function(res) {
+			res.setEncoding('utf8');
+			res.on('data', function (chunk) {
+				resData += chunk;
+			});
+			res.on('end', function() {
+				callback(resData);
+			});
+		});
+		req.on('error', (e) => {
+			console.error(e);
+		});
+		req.write(pBody);
+		req.end();
+	},
+	// Post Tags
+	postTags: function(paramsObj, callback) {
+		// https://movielens.org/api/users/me/tags
+		// Request Payload: {"movieId":id,"tag":"tag"}
+		paramsObj.movieId = parseInt(paramsObj.movieId,10);
+		this.poster(callback, '/api/users/me/tags', paramsObj);
+	},
 	// Get Genres
 	// Returns a list of genres
 	getGenres: function(callback) {
@@ -157,6 +196,13 @@ var NodeMovieLens = {
 	getMyTags: function(callback) {
 		// https://movielens.org/api/users/me/tags
 		this.getter(callback,'/api/users/me/tags');
+	},
+	// Get Movie Tags
+	// Gets tags for a movie
+	getMovieTags: function(paramsObj,callback) {
+		// https://movielens.org/api/movies/3702/tags
+		// Request Payload: {"movieId":id}
+		this.getter(callback, '/api/movies/'+ paramsObj.movieId +'/tags');
 	},
 	// explore
 	// Query engine.
