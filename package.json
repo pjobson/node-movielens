@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/pjobson/node-movielens/issues"
   },
-  "homepage": "https://github.com/pjobson/node-movielens#readme"
+  "homepage": "https://github.com/pjobson/node-movielens#readme",
+  "dependencies": {
+    "query-string": "^6.1.0"
+  }
 }
