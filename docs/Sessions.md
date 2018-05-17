@@ -11,6 +11,8 @@ Login to system.
 > /api/sessions
 
 	{"userName":"root@example.com","password":"abc123"}
+	
+Note the `N` in `userName`, if you send `username` the request will fail.
 
 ### Response
 

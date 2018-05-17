@@ -403,18 +403,6 @@ https://movielens.org/explore/highest-rated-past-year
 
 > /explore/highest-rated-past-year
 
-## Top Pics for You
-
-https://movielens.org/explore/top-picks
-
-> /api/movies/explore?hasRated=no&sortBy=prediction
-
-## Recent Releases
-
-https://movielens.org/explore/recent-releases
-
-> /api/movies/explore?hasRated=no&maxDaysAgo=90&maxFutureDays=0&sortBy=releaseDate
-
 ## Recent Favorites
 
 https://movielens.org/explore/highest-rated-past-year
